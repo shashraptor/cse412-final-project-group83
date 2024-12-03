@@ -1,0 +1,7 @@
+userid|name|dateofbirth|phonenumber|passportnumber|email|password
+1|John Doe|1999-01-15|1234567890|P4366918|john.doe@gmail.com|password123
+2|Jane Doe|2000-05-12|5551234567|M1234567|jane.doe@gmail.com|passwordpassword
+3|Alice Smith|1994-12-01|1113456789|LA080402|alice.smith@gmail.com|alsm12345
+4|Bob Johnson|1971-03-27|8983331234|FH254787|bob.johnson@gmail.com|bobjohns123
+5|Carol Williams|1960-11-10|9992341234|LA123456|carol.williams@gmail.com|cwilliams12345
+6|John Doe|1999-01-15|1234567891|P4366919|john.doe1@gmail.com|password123

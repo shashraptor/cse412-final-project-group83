@@ -1,0 +1,17 @@
+flightid|flightdate|departuretime|arrivaltime|startgate|endgate|startcity|endcity
+1|2024-10-21|8:31am|4:29pm|A1|B1|Phoenix, AZ|New York City, NY
+2|2024-10-21|12:47pm|8:30pm|A1|B1|Phoenix, AZ|New York City, NY
+3|2024-10-21|6:45am|9:21am|B2|A2|New York City, NY|Phoenix, AZ
+4|2024-10-21|1:00pm|3:32pm|B2|A2|New York City, NY|Phoenix, AZ
+5|2024-10-21|8:30am|2:11pm|A3|B3|Phoenix, AZ|Chicago, IL
+6|2024-10-21|12:15pm|5:52pm|A3|B3|Phoenix, AZ|Chicago, IL
+7|2024-10-21|5:00am|6:50am|B4|A4|Chicago, IL|Phoenix, AZ
+8|2024-10-21|5:55pm|7:45pm|B4|A4|Chicago, IL|Phoenix, AZ
+9|2024-10-21|8:31am|11:28am|A5|B5|Phoenix, AZ|Denver, CO
+10|2024-10-21|3:18pm|6:11pm|A5|B5|Phoenix, AZ|Denver, CO
+11|2024-10-21|7:14am|8:14am|B6|A6|Denver, CO|Phoenix, AZ
+12|2024-10-21|12:08pm|1:09pm|B6|A6|Denver, CO|Phoenix, AZ
+13|2024-10-21|10:04am|11:36am|A7|B7|Phoenix, AZ|Los Angeles, CA
+14|2024-10-21|5:11pm|6:38pm|A7|B7|Phoenix, AZ|Los Angeles, CA
+15|2024-10-21|6:30am|8:01am|A8|B8|Los Angeles, CA|Phoenix, AZ
+16|2024-10-21|1:35pm|3:00pm|A8|B8|Los Angeles, CA|Phoenix, AZ

@@ -1,0 +1,11 @@
+bookingid|userid|flightid|bookingdate|price|paymentmethod
+1|1|1|2024-11-01|300.00|Credit Card
+2|2|1|2024-11-02|450.00|PayPal
+3|3|1|2024-11-03|600.00|Credit Card
+4|4|1|2024-11-04|500.00|Debit Card
+5|1|2|2024-11-05|700.00|Credit Card
+6|2|2|2024-11-06|850.00|PayPal
+7|3|2|2024-11-07|400.00|Debit Card
+8|4|2|2024-11-08|750.00|Credit Card
+9|1|1|2024-11-09|900.00|Credit Card
+10|2|2|2024-11-10|300.00|PayPal
