@@ -1,0 +1,30 @@
+<!--This is a placeholder for the home page, merge code into booking.html later-->
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+        
+    <center>
+        <!--Placeholder title, ignore-->
+        <h1>{{session["name"]}}'s Bookings</h1>
+
+        <!--TODO: Add these buttons to home.html-->
+        <div>
+            <!--Button that takes you to the booking page-->
+            <a href="{{url_for("booking")}}">
+                <button>Book a flight</button>
+            </a>
+        </div>
+        
+        <div>
+            <!--Logout button-->
+            <a href="{{url_for("logout")}}">
+                <button>Logout</button>
+            </a>
+        </div>
+    </center>
+</body>
+</html>

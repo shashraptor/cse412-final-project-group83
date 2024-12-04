@@ -1,0 +1,31 @@
+<!--This is a placeholder for the booking page, merge code into booking.html later-->
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+        <!--Placeholder title, ignore-->
+    <center>
+        <h1>This is the booking page. Your userid is {{session["userid"]}}.</h1>
+
+        <!--TODO: Add these buttons to booking.html-->
+        <div>
+            <!--Button that takes you to the home page-->
+            <a href="{{url_for("home")}}">
+                <button>My Bookings</button>
+            </a>
+        </div>
+            
+        <div>
+            <!--Logout button-->
+            <a href="{{url_for("logout")}}">
+                <button>Logout</button>
+            </a>
+        </div>
+
+    </center>
+</body>
+</html>
