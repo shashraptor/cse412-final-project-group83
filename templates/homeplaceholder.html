@@ -10,7 +10,13 @@
     <center>
         <!--Placeholder title, ignore-->
         <h1>{{session["name"]}}'s Bookings</h1>
-
+        {% if bookings %}
+            {% for booking in bookings %}
+                <li>Flight ID: {{ booking[2] }} | Seat: | Price: {{ booking[4] }} | Date: {{ booking[3] }}</li>
+            {% endfor %}
+        {% else %}
+            <p>No bookings found.</p>
+        {% endif %}
         <!--TODO: Add these buttons to home.html-->
         <div>
             <!--Button that takes you to the booking page-->

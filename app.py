@@ -8,8 +8,8 @@ app.secret_key = "0fba08b30f04cf531dabf1a56f35aab98091bfd3930c757573dbc02c152f23
 conn = psycopg2.connect(database="airline",
 host="localhost",
 user="postgres",
-password="password",
-port=5432)
+password="Shash123@postgresql",
+port=5433)
 
 cursor = conn.cursor()
 
@@ -35,7 +35,12 @@ def index():
 def home():
     if "userid" not in session:
         return redirect(url_for("index"))
-    return render_template("homeplaceholder.html") # TODO: change to home.html
+    
+    user_id = session["userid"]
+    cursor.execute("SELECT * FROM booking WHERE userid = %s ORDER BY flightid", (user_id,))
+    user_bookings = cursor.fetchall()
+
+    return render_template("homeplaceholder.html", bookings=user_bookings) # TODO: change to home.html
 
 @app.route("/booking", methods=["GET", "POST"])
 def booking():
@@ -48,6 +53,7 @@ def logout():
     if "userid" not in session:
         return redirect(url_for("index"))
     session.pop("userid", None)
+    session.pop("name", None)
     return redirect(url_for("index"))
 
 if __name__ == "__main__":
