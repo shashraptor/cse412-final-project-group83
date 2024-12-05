@@ -1,4 +1,4 @@
-from flask import Flask, request, url_for, render_template, redirect, session
+from flask import Flask, request, url_for, render_template, redirect, session, jsonify
 import psycopg2
 
 app = Flask(__name__)
@@ -8,7 +8,7 @@ app.secret_key = "0fba08b30f04cf531dabf1a56f35aab98091bfd3930c757573dbc02c152f23
 conn = psycopg2.connect(database="airline",
 host="localhost",
 user="postgres",
-password="password",
+password="Chaitu2003",
 port=5432)
 
 cursor = conn.cursor()
@@ -46,7 +46,27 @@ def home():
 def booking():
     if "userid" not in session:
         return redirect(url_for("index"))
-    return render_template("bookingplaceholder.html") # TODO: change to booking.html
+    
+    user_id = session["userid"]
+    cursor.execute("SELECT * FROM Flight")
+    user_flights = cursor.fetchall()
+    cursor.execute("SELECT * FROM Seat WHERE bookingID IS NULL;")
+    user_seats = cursor.fetchall()
+
+    return render_template("bookingpage.html", flights=user_flights, seats=user_seats) # TODO: change to booking.html
+
+@app.route("/get_seats/<int:flight_id>")
+def get_seats(flight_id):
+    cursor.execute("""
+        SELECT seatNum, class 
+        FROM Seat 
+        WHERE flightID = %s AND bookingID IS NULL
+    """, (flight_id,))
+    available_seats = cursor.fetchall()
+    
+    seats = [{"seatNum": seat[0], "class": seat[1]} for seat in available_seats]
+    
+    return jsonify({"seats": seats})
 
 @app.route("/logout")
 def logout():
