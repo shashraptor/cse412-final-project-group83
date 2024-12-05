@@ -2,110 +2,133 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flight Booking System</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-        }
-
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 15px 20px;
-            text-align: center;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        input, select, button {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .result {
-            margin-top: 20px;
-            font-size: 18px;
-        }
-    </style>
+    <title>Book Your Flight</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Flight Booking System</h1>
-    </header>
-    <div class="container">
-        <h2>Book Your Flight</h2>
-        <form id="flightForm">
-            <div class="form-group">
-                <label for="flight">Choose a Flight</label>
-                <select id="flight" onchange="displaySeats()" required>
-                    <option value="">Select a Flight</option>
-                    {% for flight in flights %}
-                    <option value="{{ flight[0] }}">
-                        FlightId: {{ flight[0] }} | {{ flight[6] }} to {{ flight[7] }} | departs at {{ flight[2] }} arrives at {{ flight[3] }} | flightdate: {{ flight[1] }}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
+    <h1>Flight Booking System</h1>
+    
+    <form id="bookingForm">
+        <div class="form-group">
+            <label for="flightSelect">Choose a Flight</label>
+            <select id="flightSelect" name="flightId" required>
+                <option value="">Select a Flight</option>
+                {% for flight in flights %}
+                <option value="{{ flight[0] }}">
+                    FlightId: {{ flight[0] }} | {{ flight[6] }} to {{ flight[7] }} | 
+                    Departs: {{ flight[2] }} | Arrives: {{ flight[3] }} | 
+                    Date: {{ flight[1] }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
 
-            <!-- Dropdown for selecting available seats -->
-            <div class="form-group">
-                <label for="seat">Choose a Seat</label>
-                <select id="seat" required>
-                    <option value="">Select a Seat</option>
-                </select>
-            </div>
-        </form>
-    </div>
+        <div class="form-group">
+            <label for="seatSelect">Choose a Seat</label>
+            <select id="seatSelect" name="seatId" required disabled>
+                <option value="">Select a Seat</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="paymentMethod">Payment Method</label>
+            <select id="paymentMethod" name="paymentMethod" required>
+                <option value="">Select Payment Method</option>
+                <option value="PayPal">PayPal</option>
+                <option value="Credit Card">Credit Card</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="totalPrice">Total Price</label>
+            <input type="text" id="totalPrice" readonly>
+        </div>
+
+        <button type="submit">Confirm Booking</button>
+    </form>
 
     <script>
-        function displaySeats() {
-            const flightId = document.getElementById("flight").value;
-            const seatDropdown = document.getElementById("seat");
+    $(document).ready(function() {
+        // Price mapping based on seat class
+        const seatPrices = {
+            'First': 600,
+            'Business': 450,
+            'Economy': 300
+        };
 
-            // Clear the seat dropdown
-            seatDropdown.innerHTML = '<option value="">Select a Seat</option>';
-
+        $('#flightSelect').change(function() {
+            var flightId = $(this).val();
+            
             if (flightId) {
-                fetch(`/get_seats/${flightId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        data.seats.forEach(seat => {
-                            const option = document.createElement("option");
-                            option.value = seat.seatNum;
-                            option.textContent = seat.seatNum + " (" + seat.class + ")";
-                            seatDropdown.appendChild(option);
+                $.ajax({
+                    url: '/get_seats/' + flightId,
+                    type: 'GET',
+                    success: function(response) {
+                        var seatSelect = $('#seatSelect');
+                        seatSelect.empty();
+                        seatSelect.append('<option value="">Select a Seat</option>');
+                        
+                        response.seats.forEach(function(seat) {
+                            seatSelect.append(
+                                '<option value="' + seat.seatNum + '" data-class="' + seat.class + '">' + 
+                                'Seat: ' + seat.seatNum + ' | Class: ' + seat.class + 
+                                '</option>'
+                            );
                         });
-                    })
-                    .catch(error => {
-                        console.error('Error fetching seats:', error);
-                    });
+                        
+                        seatSelect.prop('disabled', false);
+                    }
+                });
+            } else {
+                $('#seatSelect').prop('disabled', true).empty().append('<option value="">Select a Seat</option>');
+                $('#totalPrice').val('');
             }
-        }
+        });
+
+        $('#seatSelect').change(function() {
+            var selectedOption = $(this).find(':selected');
+            var seatClass = selectedOption.data('class');
+            
+            if (seatClass) {
+                var price = seatPrices[seatClass] || 0;
+                $('#totalPrice').val('$' + price);
+            } else {
+                $('#totalPrice').val('');
+            }
+        });
+
+        $('#bookingForm').submit(function(e) {
+            e.preventDefault();
+            
+            if (!$('#flightSelect').val() || !$('#seatSelect').val() || !$('#paymentMethod').val()) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            $.ajax({
+                url: '/book_flight',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    flightId: $('#flightSelect').val(),
+                    seatId: $('#seatSelect').val(),
+                    paymentMethod: $('#paymentMethod').val(),
+                    price: $('#totalPrice').val().replace('$', '')
+                }),
+                success: function(response) {
+                    if (response.status === 'success') {
+                        alert('Booking confirmed successfully!');
+                        window.location.href = '/home';
+                    } else {
+                        alert('Booking failed: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while booking');
+                }
+            });
+        });
+    });
     </script>
 </body>
 </html>

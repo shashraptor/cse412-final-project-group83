@@ -1,4 +1,5 @@
 from flask import Flask, request, url_for, render_template, redirect, session, jsonify
+from datetime import date
 import psycopg2
 
 app = Flask(__name__)
@@ -53,7 +54,8 @@ def booking():
     cursor.execute("SELECT * FROM Seat WHERE bookingID IS NULL;")
     user_seats = cursor.fetchall()
 
-    return render_template("bookingpage.html", flights=user_flights, seats=user_seats) # TODO: change to booking.html
+    return render_template("bookingpage.html", flights=user_flights, seats=user_seats)
+
 
 @app.route("/get_seats/<int:flight_id>")
 def get_seats(flight_id):
@@ -67,6 +69,56 @@ def get_seats(flight_id):
     seats = [{"seatNum": seat[0], "class": seat[1]} for seat in available_seats]
     
     return jsonify({"seats": seats})
+
+@app.route("/book_flight", methods=["POST"])
+def book_flight():
+    if "userid" not in session:
+        return jsonify({"status": "error", "message": "Please log in first"})
+    
+    try:
+        # Get data from the request
+        booking_data = request.get_json()
+        
+        # Add detailed logging for debugging
+        print("Received booking data:", booking_data)
+        
+        flight_id = booking_data.get('flightId')
+        seat_id = booking_data.get('seatId')
+        payment_method = booking_data.get('paymentMethod')
+        price = booking_data.get('price')
+        user_id = session["userid"]
+
+        # Validate input data
+        if not all([flight_id, seat_id, payment_method, price, user_id]):
+            print("Missing booking information")
+            return jsonify({"status": "error", "message": "Missing booking information"})
+
+        # Insert booking
+        cursor.execute("""
+            INSERT INTO Booking (userID, flightID, bookingDate, price, paymentMethod) 
+            VALUES (%s, %s, %s, %s, %s) 
+            RETURNING bookingID
+        """, (user_id, flight_id, date.today(), price, payment_method))
+        booking_id = cursor.fetchone()[0]
+
+        # Update seat with booking ID
+        cursor.execute("""
+            UPDATE Seat 
+            SET bookingID = %s 
+            WHERE flightID = %s AND seatNum = %s
+        """, (booking_id, flight_id, seat_id))
+
+        # Commit the transaction
+        conn.commit()
+
+        return jsonify({"status": "success"})
+
+    except Exception as e:
+        # Rollback in case of error
+        conn.rollback()
+        print(f"Booking error: {e}")
+        return jsonify({"status": "error", "message": str(e)})
+    
 
 @app.route("/logout")
 def logout():
