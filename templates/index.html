@@ -32,10 +32,34 @@
         color: white;
         cursor: pointer;
     }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    
+    .logo {
+        height: 50px;
+    }
+
+    .title {
+        margin: 0;
+        font-size: 24px;
+        color: maroon;
+    }
+
+    form {
+        margin-top: 20px;
+    }
 </style>
 
 <body>
-
+    <header class="header">
+        <img src="/static/asu_logo.png" alt="Logo" class="logo">
+        <h1 class="title">ASU Airlines</h1>
+    </header>
     <form action="{{url_for("index")}}" method = "POST">
         <center>
             <div>

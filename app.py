@@ -9,8 +9,8 @@ app.secret_key = "0fba08b30f04cf531dabf1a56f35aab98091bfd3930c757573dbc02c152f23
 conn = psycopg2.connect(database="airline",
 host="localhost",
 user="postgres",
-password="password",
-port=5432)
+password="Shash123@postgresql",
+port=5433)
 
 cursor = conn.cursor()
 
