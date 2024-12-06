@@ -6,6 +6,45 @@
     <title>Home</title>
 
 <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+    }
+
+    input, select, button {
+        padding: 10px;
+        font-size: 16px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button.blue {
+        background-color: #5683ff;
+        color: white;
+        cursor: pointer;
+    }
+
+    button.blue:hover {
+        background-color: #3e5eb4;
+        color: white;
+        cursor: pointer;
+    }
+
+    button.red {
+        background-color: #d51a1a;
+        color: white;
+        cursor: pointer;
+    }
+
+    button.red:hover {
+        background-color: #b01616;
+        color: white;
+        cursor: pointer;
+    }
+
     table, th, td {
         border: 1px solid black;
     }
@@ -52,14 +91,14 @@
 
         <div>
             <!--Button that takes you to the booking page-->
-            <button onclick="location.href='{{url_for("booking")}}'">Book a flight</button>
+            <button class="blue" onclick="location.href='{{url_for("booking")}}'">Book a flight</button>
         </div>
 
         <br>
         
         <div>
             <!--Logout button-->
-            <button onclick="location.href='{{url_for("logout")}}'">Logout</button>
+            <button class="red" onclick="location.href='{{url_for("logout")}}'">Logout</button>
         </div>
     </center>
 </body>
