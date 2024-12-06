@@ -1,0 +1,66 @@
+<!--This is a placeholder for the home page, merge code into booking.html later-->
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Home</title>
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    th, td {
+        text-align: center;
+        padding:10px
+    }
+
+    tr:nth-child(odd) {
+        background-color: #D6EEEE;
+    }
+
+</style>
+
+</head>
+<body>
+        
+    <center>
+        <h1>{{session["name"]}}'s Bookings</h1>
+        {% if bookings %}
+                <table>
+                    <tr>
+                        <th>Date</th> <th>Leaves from</th> <th>Gate</th> <th>Departure time</th> <th>Arrives at</th> <th>Gate</th> <th>Arrival time</th> <th>Seat Number</th>
+                    </tr>
+                    {% for i in range(lenSeats) %}
+                        <tr> 
+                            <td>{{bookings[i][1]}}</td> 
+                            <td>{{bookings[i][2]}}</td> 
+                            <td>{{bookings[i][3]}}</td> 
+                            <td>{{bookings[i][4]}}</td>
+                            <td>{{bookings[i][5]}}</td> 
+                            <td>{{bookings[i][6]}}</td>
+                            <td>{{bookings[i][7]}}</td>
+                            <td>{{seats[i]}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+        {% else %}
+            <p>No bookings found.</p>
+        {% endif %}
+
+        <br>
+
+        <div>
+            <!--Button that takes you to the booking page-->
+            <button onclick="location.href='{{url_for("booking")}}'">Book a flight</button>
+        </div>
+
+        <br>
+        
+        <div>
+            <!--Logout button-->
+            <button onclick="location.href='{{url_for("logout")}}'">Logout</button>
+        </div>
+    </center>
+</body>
+</html>

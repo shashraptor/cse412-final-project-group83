@@ -9,7 +9,7 @@ app.secret_key = "0fba08b30f04cf531dabf1a56f35aab98091bfd3930c757573dbc02c152f23
 conn = psycopg2.connect(database="airline",
 host="localhost",
 user="postgres",
-password="Chaitu2003",
+password="password",
 port=5432)
 
 cursor = conn.cursor()
@@ -38,10 +38,17 @@ def home():
         return redirect(url_for("index"))
     
     user_id = session["userid"]
-    cursor.execute("SELECT * FROM booking WHERE userid = %s ORDER BY flightid", (user_id,))
+    cursor.execute("""SELECT bookingid, flightdate, startcity, startgate, departuretime, endcity, endgate, arrivaltime
+                    FROM flight, booking
+                    WHERE userid = %s AND booking.flightid = flight.flightid ORDER BY flight.flightid""",
+                    (user_id,))
     user_bookings = cursor.fetchall()
+    user_seats = []
+    for booking in user_bookings:
+        cursor.execute("SELECT seatNum FROM seat WHERE bookingid = %s ORDER BY flightid", (booking[0],))
+        user_seats.append(cursor.fetchone()[0])
 
-    return render_template("homeplaceholder.html", bookings=user_bookings) # TODO: change to home.html
+    return render_template("home.html", bookings=user_bookings, seats=user_seats, lenSeats=len(user_seats))
 
 @app.route("/booking", methods=["GET", "POST"])
 def booking():
@@ -54,7 +61,7 @@ def booking():
     cursor.execute("SELECT * FROM Seat WHERE bookingID IS NULL;")
     user_seats = cursor.fetchall()
 
-    return render_template("bookingpage.html", flights=user_flights, seats=user_seats)
+    return render_template("booking.html", flights=user_flights, seats=user_seats)
 
 
 @app.route("/get_seats/<int:flight_id>")

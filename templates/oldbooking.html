@@ -108,14 +108,46 @@
 
     <div class="container">
         <h2>Book Your Flight</h2>
+
+            <label for="from">From:</label>
+            <select id="from" onchange="location.href='{{url_for("booking")}}?startCity=this.value'">
+                <option disabled selected value>Select a city</option>
+                <option selected>Phoenix</option>
+                <option>Denver</option>
+                <option>Los Angeles</option>
+                <option>Chicago</option>
+                <option>New York City</option>
+            </select>
+
+        <br>
+        <br>
+
+        <label for="to">To:</label>
+        <select id="to">
+            <option disabled selected value>Select a city</option>
+            <option>Phoenix</option>
+            <option>Denver</option>
+            <option>Los Angeles</option>
+            <option>Chicago</option>
+            <option>New York City</option>
+        </select>
+
+        <br>
+        <br>
+
         <form id="flightForm">
+
             <div class="form-group">
                 <label for="flight">Choose a Flight</label>
                 <select id="flight" onchange="displaySeats()" required>
                     <option value="">Select a flight</option>
-                    <option value="flight1">Flight 101 - Toronto to New York</option>
-                    <option value="flight2">Flight 202 - New York to London</option>
-                    <option value="flight3">Flight 303 - London to Paris</option>
+                    {% if flights %}
+                        {% for flight in flights %}
+                            <li>From {{flight[6]}} @ flight{{2}} to {{flight[7]}} {{flight[3]}}</li>
+                        {% endfor %}
+                    {% else %}
+                        <p>No flights found.</p>
+                    {% endif %}
                 </select>
             </div>
 
