@@ -68,7 +68,7 @@
                     <option value="">Select a Flight</option>
                     {% for flight in flights %}
                     <option value="{{ flight[0] }}">
-                        FlightId: {{ flight[0] }} | {{ flight[6] }} to {{ flight[7] }} | 
+                        {{ flight[6] }} to {{ flight[7] }} | 
                         Departs: {{ flight[2] }} | Arrives: {{ flight[3] }} | 
                         Date: {{ flight[1] }}
                     </option>
