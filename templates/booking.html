@@ -59,10 +59,11 @@
 <body>
     <center>
         <h1>Flight Booking System</h1>
-        
+
         <form id="bookingForm">
             <div class="form-group">
                 <label for="flightSelect">Choose a Flight</label>
+                <br>
                 <select id="flightSelect" name="flightId" required>
                     <option value="">Select a Flight</option>
                     {% for flight in flights %}
