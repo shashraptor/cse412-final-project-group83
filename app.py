@@ -6,6 +6,7 @@ app = Flask(__name__)
 
 app.secret_key = "0fba08b30f04cf531dabf1a56f35aab98091bfd3930c757573dbc02c152f23d8"
 
+# SET THESE TO MATCH DATABASE VALUES
 conn = psycopg2.connect(database="airline",
 host="localhost",
 user="postgres",

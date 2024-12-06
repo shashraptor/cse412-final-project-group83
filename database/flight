@@ -1,4 +1,3 @@
-flightid|flightdate|departuretime|arrivaltime|startgate|endgate|startcity|endcity
 1|2024-10-21|8:31am|4:29pm|A1|B1|Phoenix, AZ|New York City, NY
 2|2024-10-21|12:47pm|8:30pm|A1|B1|Phoenix, AZ|New York City, NY
 3|2024-10-21|6:45am|9:21am|B2|A2|New York City, NY|Phoenix, AZ
